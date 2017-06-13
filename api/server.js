@@ -107,6 +107,11 @@ let connection = r.connect({
 
 
 
+    /**
+     * Toutes ces actions qui suivent sont sécurisées par le middleware expressJwt() 
+     * qui vérifie la présence de jetton coté client (dans la requete HTTP) avec sa clef secrete coté serveur
+     */
+
     app.get('/remove/:id', expressJwt({ secret: secret }), (req, res) => {
         let id = req.params.id;
 
@@ -134,19 +139,29 @@ let connection = r.connect({
     });
 
     app.post('/add', expressJwt({ secret: secret }), (req, res) => {
-        console.log(req.body)
-        r.table('answers').insert(req.body).run(connection, (err, cursor) => {
-            if (err) throw err;
 
-            r.table('answers').run(connection, (err, cursor) => {
-                if (err) throw err;
-                cursor.toArray().then(function (results) {
-                    res.json(results);
-                }).error(console.log);
+        let newAnser = req.body;
+
+        bcrypt.genSalt(10, function (err, salt) {
+            bcrypt.hash(newAnser.reponse, salt, function (err, hash) {
+
+                newAnser.reponse = hash;
+
+                r.table('answers').insert(newAnser).run(connection, (err, cursor) => {
+                    if (err) throw err;
+
+                    r.table('answers').run(connection, (err, cursor) => {
+                        if (err) throw err;
+                        cursor.toArray().then(function (results) {
+                            res.json(results);
+                        }).error(console.log);
+                    });
+
+
+                });
             });
-
-
         });
+
 
     });
 
