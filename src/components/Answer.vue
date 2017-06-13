@@ -3,8 +3,9 @@
     <div class="col-sm-4 col-sm-offset-4">
       <h3><i class="material-icons">question_answer</i> FAQ</h3>
       
-        <div class="row"> 
-            
+        <div class="row" v-if="user.authenticated == true"> 
+            <a class="waves-effect waves-light btn" @click="refresh"><i class="material-icons left">refresh</i>Rafraichir la liste</a>
+
             <ul class="collection">
               <li class="collection-item" v-for="answer in answers">
               <a @click="remove(answer.id)" class="secondary-content"><i class="material-icons red-text">delete_forever</i></a>
@@ -16,11 +17,11 @@
             <form class="col s12">
               <div class="row">
                 <div class="input-field col s12">
-                  <input v-validate="{ rules: {required: true,regex: /^([a-z0-9- ]{8,300})$/i} }"   v-model="newAnswer.question" placeholder="Quelle est la question?" id="question" name="question" type="text" class="validate">
+                  <input v-validate="{ rules: {required: true,regex: /^([a-z0-9-\? ]{8,300})$/i} }"   v-model="newAnswer.question" placeholder="Quelle est la question?" id="question" name="question" type="text" class="validate">
                   <span v-show="errors.has('question')" class="text-danger">{{ errors.first('question') }}</span>
                 </div>
                 <div class="input-field col s12">
-                  <input v-validate="{ rules: {required: true,regex: /^([a-z0-9- ]{4,})$/i} }" name="reponse"  v-model="newAnswer.reponse" placeholder="Sa réponses secrete" id="reponse" type="text" class="validate">
+                  // <input v-validate="{ rules: {required: true,regex: /^([a-z0-9\. ]{4,})$/i} }" name="reponse"  v-model="newAnswer.reponse" placeholder="Sa réponses secrete" id="reponse" type="text" class="validate">
                   <span v-show="errors.has('reponse')" class="text-danger">{{ errors.first('reponse') }}</span>
                 </div>
                 <div class="input-field col s12">
@@ -58,12 +59,19 @@
               this.answers = res.body;
               this.$toasted.show('Vous devez etre connecté...').goAway(1500); // plugin Toast implemented      
           });
+      },
+
+      refresh(){
+        this.$http.get('http://localhost:3000/answers').then((res) => {
+            this.answers = res.body;
+          });
       }
 
     },
 
     data() {
       return {
+        user: Store.user,
          newAnswer: {
           question: '',
           reponse: ''
@@ -72,6 +80,7 @@
       }
     },
 
+      
     created() {
 
       if (!Store.user.authenticated) {

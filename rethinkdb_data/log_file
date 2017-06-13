@@ -82,3 +82,5 @@
 2017-06-13T09:47:25.038411000 41.564604s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: This server is Raft leader for term 5. Latest log index is 11.
 2017-06-13T09:47:25.427238000 41.953431s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: Starting a new Raft election for term 4.
 2017-06-13T09:47:25.467118000 41.993311s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: This server is Raft leader for term 4. Latest log index is 8.
+2017-06-13T11:30:46.502457000 6243.267640s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: Configuration is changing.
+2017-06-13T11:30:46.719619000 6243.484803s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: Configuration is changing.

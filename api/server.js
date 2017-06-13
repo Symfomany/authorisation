@@ -118,7 +118,7 @@ let connection = r.connect({
         r.table('answers').get(id).delete().run(connection, (err, cursor) => {
             if (err) throw err;
 
-            r.table('answers').run(connection, (err, cursor) => {
+            r.table('answers').orderBy('question').run(connection, (err, cursor) => {
                 if (err) throw err;
                 cursor.toArray().then(function (results) {
                     res.json(results);
@@ -129,7 +129,7 @@ let connection = r.connect({
     });
 
     app.get('/answers', expressJwt({ secret: secret }), (req, res) => {
-        r.table('answers').run(connection, (err, cursor) => {
+        r.table('answers').orderBy('question').run(connection, (err, cursor) => {
             if (err) throw err;
             cursor.toArray().then(function (results) {
                 res.json(results);
@@ -145,12 +145,13 @@ let connection = r.connect({
         bcrypt.genSalt(10, function (err, salt) {
             bcrypt.hash(newAnser.reponse, salt, function (err, hash) {
 
+                // j'écraser la réponse par le hash généré
                 newAnser.reponse = hash;
 
                 r.table('answers').insert(newAnser).run(connection, (err, cursor) => {
                     if (err) throw err;
 
-                    r.table('answers').run(connection, (err, cursor) => {
+                    r.table('answers').orderBy('question').run(connection, (err, cursor) => {
                         if (err) throw err;
                         cursor.toArray().then(function (results) {
                             res.json(results);
