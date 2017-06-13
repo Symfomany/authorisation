@@ -50,3 +50,35 @@
 2017-06-13T06:59:28.117251000 1.702910s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: This server is Raft leader for term 2. Latest log index is 2.
 2017-06-13T06:59:28.421038000 2.006697s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: Starting a new Raft election for term 3.
 2017-06-13T06:59:28.456007000 2.041666s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: This server is Raft leader for term 3. Latest log index is 5.
+2017-06-13T09:34:32.747301000 40.036737s notice: Running rethinkdb 2.3.5 (CLANG 7.3.0 (clang-703.0.31))...
+2017-06-13T09:34:32.753450000 40.042845s notice: Running on Darwin 16.3.0 x86_64
+2017-06-13T09:34:32.753479000 40.042874s notice: Loading data from directory /Users/boyer/Desktop/atelier/demovueupload/rethinkdb_data
+2017-06-13T09:34:32.786658000 40.076053s info: Automatically using cache size of 4171 MB
+2017-06-13T09:34:32.787007000 40.076402s notice: Listening for intracluster connections on port 29015
+2017-06-13T09:34:32.809881000 40.099276s notice: Listening for client driver connections on port 28015
+2017-06-13T09:34:32.810090000 40.099485s notice: Listening for administrative HTTP connections on port 8080
+2017-06-13T09:34:32.810092000 40.099487s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-06-13T09:34:32.810094000 40.099489s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-06-13T09:34:32.810116000 40.099510s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-06-13T09:34:32.810117000 40.099512s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-06-13T09:34:32.810118000 40.099513s notice: Server ready, "boyer_HP_ENVY_TS_17_Notebook_PC_xv1" 5cc3ee1c-e043-4261-ae1a-dba5c04d2fb9
+2017-06-13T09:34:34.319697000 41.609146s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: Starting a new Raft election for term 4.
+2017-06-13T09:34:34.341652000 41.631101s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: This server is Raft leader for term 4. Latest log index is 8.
+2017-06-13T09:34:34.568395000 41.857844s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: Starting a new Raft election for term 3.
+2017-06-13T09:34:34.607002000 41.896451s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: This server is Raft leader for term 3. Latest log index is 5.
+2017-06-13T09:47:23.504642000 40.030839s notice: Running rethinkdb 2.3.5 (CLANG 7.3.0 (clang-703.0.31))...
+2017-06-13T09:47:23.509468000 40.035661s notice: Running on Darwin 16.3.0 x86_64
+2017-06-13T09:47:23.509503000 40.035695s notice: Loading data from directory /Users/boyer/Desktop/atelier/demovueupload/rethinkdb_data
+2017-06-13T09:47:23.544931000 40.071124s info: Automatically using cache size of 3376 MB
+2017-06-13T09:47:23.545323000 40.071516s notice: Listening for intracluster connections on port 29015
+2017-06-13T09:47:23.566378000 40.092570s notice: Listening for client driver connections on port 28015
+2017-06-13T09:47:23.566468000 40.092661s notice: Listening for administrative HTTP connections on port 8080
+2017-06-13T09:47:23.566474000 40.092666s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-06-13T09:47:23.566475000 40.092668s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-06-13T09:47:23.566568000 40.092761s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-06-13T09:47:23.566570000 40.092762s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-06-13T09:47:23.566571000 40.092763s notice: Server ready, "boyer_HP_ENVY_TS_17_Notebook_PC_xv1" 5cc3ee1c-e043-4261-ae1a-dba5c04d2fb9
+2017-06-13T09:47:25.015212000 41.541405s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: Starting a new Raft election for term 5.
+2017-06-13T09:47:25.038411000 41.564604s info: Table 7ef8aa14-5571-405e-b2fe-b3c4812a8edb: This server is Raft leader for term 5. Latest log index is 11.
+2017-06-13T09:47:25.427238000 41.953431s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: Starting a new Raft election for term 4.
+2017-06-13T09:47:25.467118000 41.993311s info: Table d8f18ce9-9b84-45a3-a7cb-5a66f29c6148: This server is Raft leader for term 4. Latest log index is 8.

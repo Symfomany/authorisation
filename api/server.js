@@ -72,63 +72,15 @@ Si en utilisant sa clé privée le serveur parvient à décoder le token, le ser
  Le serveur pourra alors authoriser le client à accéder aux resources demandées par le client.
  
  */
-let secret = 'q5f6ds465sdfg4v6466f15sdf56sd1f56s165f1sd65f156s16sfdfdf4d6f4s6$5ndjwk';
 
-//app.use('/', expressJwt({ secret: secret })); signé par le token
+// clef secrete du serveur permettant de maniere unique d'encrypter 
+// le jetton avec les données clients
+let secret = 'q5f6ds465sdfg4v6466f15sdf56sd1f56s165f1sd65f156s16sfdfdf4d6f4s6$5ndjwk';
 
 
 let connection = r.connect({
     db: "test" //your database
 }).then((connection) => { // une fois qu'il a effectuer une connexion
-
-
-
-
-
-    /**
-     * Inscription
-     */
-    app.post('/signup', (req, res) => {
-
-        bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(req.body.password, salt, function (err, hash) {
-
-                let now = new Date();
-                r.table('users').insert({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: hash,
-                    created: now
-                }).run(connection, (err, result) => {
-
-                    // setup email data with unicode symbols
-                    let mailOptions = {
-                        from: '"Julien Boyer" <julien@meetserious.com>', // sender address
-                        to: req.body.email, // list of receivers
-                        subject: 'Bienvenue , vous etes inscris ✔', // Subject line
-                        text: 'Awesome long paragraph about inscription...', // plain text body
-                        html: `<h1>Hello! ${req.body.name}</h1>
-                        <p>Awesome long paragraph about inscription...</p>
-                        <p> Inscris le ${now}</p>`
-                    };
-
-                    // send mail with defined transport object
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log(error);
-                        }
-                        console.log('Message %s sent: %s', info.messageId, info.response);
-                        res.json(true);
-                    });
-
-
-                })
-            });
-        });
-
-    });
-
-
 
 
     /**
@@ -151,9 +103,25 @@ let connection = r.connect({
                 prenom: 'Julien'
             },
         });
-
     });
 
+
+
+    app.get('/remove/:id', expressJwt({ secret: secret }), (req, res) => {
+        let id = req.params.id;
+
+        r.table('answers').get(id).delete().run(connection, (err, cursor) => {
+            if (err) throw err;
+
+            r.table('answers').run(connection, (err, cursor) => {
+                if (err) throw err;
+                cursor.toArray().then(function (results) {
+                    res.json(results);
+                }).error(console.log);
+            });
+        });
+
+    });
 
     app.get('/answers', expressJwt({ secret: secret }), (req, res) => {
         r.table('answers').run(connection, (err, cursor) => {
@@ -161,6 +129,23 @@ let connection = r.connect({
             cursor.toArray().then(function (results) {
                 res.json(results);
             }).error(console.log);
+        });
+
+    });
+
+    app.post('/add', expressJwt({ secret: secret }), (req, res) => {
+        console.log(req.body)
+        r.table('answers').insert(req.body).run(connection, (err, cursor) => {
+            if (err) throw err;
+
+            r.table('answers').run(connection, (err, cursor) => {
+                if (err) throw err;
+                cursor.toArray().then(function (results) {
+                    res.json(results);
+                }).error(console.log);
+            });
+
+
         });
 
     });

@@ -22,6 +22,7 @@
     methods: {
       connection() {
         this.$http.post('http://localhost:3000/signin').then((res) => {
+            
             localStorage.setItem('id_token', res.body.id_token)
             localStorage.setItem('user', JSON.stringify(res.body.user))
             
