@@ -1,6 +1,3 @@
-import router from './router/index'
-import Vue from 'vue'
-
 
 export default {
 
@@ -9,8 +6,8 @@ export default {
         datas: {}
     },
 
-
     checkAuth() {
+        console.log('check')
         // savoir si il est Authentifié, Si oui, recharger le Store depuis la session
         var jwt = localStorage.getItem('id_token')
         if (jwt) {
@@ -25,10 +22,9 @@ export default {
         }
     },
 
-
     getAuthHeader() {
-        return {
-            'Authorization': 'Bearer ' + localStorage.getItem('id_token')
-        }
+        return 'Bearer ' + localStorage.getItem('id_token')
+
     }
+
 }

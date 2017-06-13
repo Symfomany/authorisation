@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import Store from '@/Store.js'
 Store.checkAuth();
+// permet de checker à chaque requete si je suis connecter 
+// et de synchroniser le Store vis à vis du LocalStorage
 
 import router from './router'
 import VueResource from 'vue-resource';
@@ -16,6 +18,15 @@ Vue.use(VueResource);
 
 Vue.config.productionTip = false
 
+
+
+// Configure l'entête http au niveau de l'autorisation pour que chaquete requete soit signé avec l'entete Authorisation
+// Voir aussi HTTP Header Authorization
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization
+// https://fr.wikipedia.org/wiki/Authentification_HTTP
+Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -24,10 +35,4 @@ new Vue({
   components: { App }
 })
 
-
-// Configure l'entête http au niveau de l'autorisation pour que chaquete requete soit signé avec l'entete Authorisation
-// Voir aussi HTTP Header Authorization
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization
-// https://fr.wikipedia.org/wiki/Authentification_HTTP
-Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
 

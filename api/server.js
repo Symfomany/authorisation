@@ -136,150 +136,36 @@ let connection = r.connect({
      */
     app.post('/signin', (req, res) => {
 
-        let user = null;
-        // authentification basic user et password avec bcrypt
-        r.table('users').filter({ "email": req.body.email }).run(connection, (err, cursor) => {
+        // création d'un jetton (token) avec la clef secret + clef publique
+        let token = jwt.sign({
+            nom: 'Boyer',
+            prenom: 'Julien'
+            // L'objet passé en premier paramètre à sign() va être encodé.
+        }, secret, { expiresIn: 18000 }); // // 60*5 minutes
 
+        // Charge à vous, côté client, d' ajouter le token au header de chaque requête
+        res.json({
+            id_token: token,
+            user: {
+                nom: 'Boyer',
+                prenom: 'Julien'
+            },
+        });
+
+    });
+
+
+    app.get('/answers', expressJwt({ secret: secret }), (req, res) => {
+        r.table('answers').run(connection, (err, cursor) => {
             if (err) throw err;
-
-            cursor.toArray((err, result) => {
-                if (err) throw err;
-                bcrypt.compare(req.body.password, result[0].password, function (err, resultat) {
-                    if (!resultat) { res.statusCode = 500; return res.json(err); }
-                    user = result[0];
-
-                    // création d'un jetton (token) avec la clef secret + clef publique
-                    let token = jwt.sign({
-                        email: user.email, // L'objet passé en premier paramètre à sign() va être encodé.
-                    }, secret, { expiresIn: 18000 }); // // 60*5 minutes
-
-
-                    // Charge à vous, côté client, d' ajouter le token au header de chaque requête
-
-                    res.json({
-                        id_token: token,
-                        user: user,
-                    });
-
-
-                });
-            });
-        });
-
-
-    });
-
-
-    app.post('/exist', (req, res) => {
-        r.table('users').filter({ email: req.body.email }).isEmpty().run(connection, (err, result) => {
-            if (err) throw err;
-            res.json(result);
+            cursor.toArray().then(function (results) {
+                res.json(results);
+            }).error(console.log);
         });
 
     });
 
 
-    /**
-     * Mise à joir du profil
-     */
-    app.post('/update', expressJwt({ secret: secret }), (req, res) => {
-
-        let now = new Date();
-        r.table('users').filter({ email: req.user.email }).update({
-            name: req.body.name,
-            email: req.body.email,
-            updated: now
-        }).run(connection, (err, result) => {
-
-            // setup email data with unicode symbols
-            let mailOptions = {
-                from: '"Julien Boyer" <julien@meetserious.com>', // sender address
-                to: req.body.email, // list of receivers
-                subject: 'Modification de votre compte ✔', // Subject line
-                text: 'Awesome long paragraph about inscription...', // plain text body
-                html: `<h1>Hello! ${req.body.name}</h1>
-                        <p>Awesome long paragraph about inscription...</p>
-                        <p>Modifié le ${now}</p>`
-            };
-
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return console.log(error);
-                }
-                console.log('Message %s sent: %s', info.messageId, info.response);
-                res.json(true);
-            });
-
-
-        })
-    });
-
-
-
-    // Utilisation du middleware expressJwt()
-    // Qu'est ce qu'un midleware? Documentation... http://expressjs.com/fr/guide/using-middleware.html
-    // expressJwt() permet de vérifier que l'accès à cette route doit etre signée entre la clefs utiliateur et la clef secrete, autrement dit que l'utilisateur est bien connecté
-    app.post('/upload', expressJwt({ secret: secret }), (req, res) => {
-
-        // préparation de l'upload via le module upload-file (vérification du type de fichier,repertoire, taille etc...)
-
-        var upload = new Upload({
-            dest: 'uploads/users',
-            maxFileSize: 100 * 2048, // en Byte
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            rename: function (name, file) {
-                return file.filename;
-            }
-        });
-
-        // quand l'upload est fini
-        upload.on('end', function (fields, files) {
-            r.table('users').filter({ email: req.user.email }).update({ picture: files.avatar.filename }).run(connection, (err, result) => {
-                if (err) throw err;
-                res.json(true)
-            });
-        });
-
-        // si l'upload a rencontré une erreur
-        upload.on('error', function (err) {
-            console.log(err)
-            res.send(err);
-        });
-
-        upload.parse(req);
-
-    });
-
-
-
-
-
-
-
-
-    app.post('/regenerate', (req, res) => {
-
-        /**
-         * 1. vérifier son email si il existe en bdd (RethinkDB: isEmpty())
-         * 2. Génerer un mot de pass avec BCrypt de façon aléatoire (Math.random())
-         * 3. Metre à jour l'utlisateur en Base de Données
-         * 4. Envoyé un email à l'utilisateur concerné en lui précisant que cet email est temporaire 
-         */
-
-        res.json(true)
-    });
-
-
-
-
-
-
-
-    app.post('/quote', (req, res) => {
-
-        res.json(" 'Chacun a pour ennemis les gens de sa maison' -  Michel Neyret");
-    });
 
 });
 

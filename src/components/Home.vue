@@ -1,32 +1,38 @@
 <template>
   <div class="col-sm-6 col-sm-offset-3">
-    <h1>Welcome to Auth & Jwt</h1>
+    <h3>FAQ secrète</h3>
 
-    <button class="btn btn-primary" @click="getQuote()">Get a Quote</button>
-    <div class="quote-area" v-if="quote">
-      <h2>
-        <blockquote>{{ quote }}</blockquote>
-      </h2>
-    </div>
+    <p>Créer des questions publiques et des réponses secrètes</p>
+    <div class="" v-if="user.authenticated == false">Vous devez être connecté pour créer son sujet et sa réponse</div>
+    <button class="btn btn-primary" @click="connection()"><i class="material-icons">lock_open</i> Je m'authentifie en tant que Julien Boyer</button>
   </div>
 </template>
 
 <script>
+  import Store from '@/Store.js'
 
   export default {
 
     data() {
       return {
-        quote: ''
+          user: Store.user
       }
     },
 
     methods: {
-      getQuote() {
-        this.$http.get('http://localhost:3000/quote', (data) => {
-          this.quote = data;
-        })
-          .error((err) => console.log(err))
+      connection() {
+        this.$http.post('http://localhost:3000/signin').then((res) => {
+            localStorage.setItem('id_token', res.body.id_token)
+            localStorage.setItem('user', JSON.stringify(res.body.user))
+            
+            Store.user.datas = res.body.user;
+            Store.user.authenticated = true
+            
+            this.$router.push('/answer'); //redirection
+            this.$toasted.show('Vous etes connecté en tant que Julien Boyer').goAway(1500); // plugin Toast implemented
+
+        });
+
       }
     }
 
