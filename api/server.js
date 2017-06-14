@@ -82,6 +82,10 @@ let connection = r.connect({
     db: "test" //your database
 }).then((connection) => { // une fois qu'il a effectuer une connexion
 
+    app.get('/', (req, res) => {
+        res.json('Server is running...')
+    });
+
 
     /**
      * La création et l'envoi d'un token au client lorsqu'il se connecte.

@@ -1,6 +1,11 @@
 <template>
   <div class="col-sm-6 col-sm-offset-3">
     <h3>FAQ secrète</h3>
+    <ul>
+        <li><router-link :to="{ name: 'a'}">Composant A</router-link></li>
+        <li><router-link :to="{ name: 'b'}">Composant B</router-link></li>
+    </ul>
+      <router-view></router-view>
 
     <p v-if="user.authenticated == false">Créer des questions publiques et des réponses secrètes</p>
     <p v-if="user.authenticated == true">Bienvenue {{ user.datas.nom }} {{ user.datas.prenom }}</p>
